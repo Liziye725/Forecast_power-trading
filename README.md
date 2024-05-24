@@ -1,5 +1,5 @@
 # Forecast_power-trading
-*No commercial use*
+*No commercial use, just for my personal project*
 
 I am finding open-source dataset for this project and will keep update.
 
