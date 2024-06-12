@@ -1,0 +1,37 @@
+## Update changes for old version
+
+1. Version and usage update for packages:
+
+```python
+# from statsmodels.tsa import stattools
+import statsmodels.api as stattools
+```
+
+2. Using tz_convert instead of tz_localize
+
+```python
+df = df.tz_convert('utc')
+```
+
+## Notification before git add
+
+1. Git configuration for the current operating system (Windows in this case).
+
+- **LF (Line Feed)**: This is the Unix-style line ending (used by Linux and macOS).
+- **CRLF (Carriage Return + Line Feed)**: This is the Windows-style line ending.
+
+2. Configure Git to Use LF (Recommended for Consistency)
+   Set Git to use LF for all files in the repository. Create a `.gitattributes` file in the root of your repository and add the following lines:
+
+   ```
+   echo "* text=auto" >> .gitattributes
+   echo "*.ipynb text eol=lf" >> .gitattributes
+   ```
+
+3. Git will convert LF to CRLF when checking out code, and convert CRLF back to LF when committing code:
+
+- When you check out code from the repository, Git will convert LF line endings in files to CRLF, allowing you to edit files normally in a Windows environment.
+- When you commit code, Git will convert CRLF line endings to LF, ensuring that files in the repository maintain a consistent LF format.
+  ```
+  git config core.autocrlf true
+  ```

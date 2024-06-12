@@ -20,7 +20,7 @@ def load_dataset(path=None, update_date=None, modules=None):
                       'month_11':76, 'month_12':77}
     df = pd.read_csv(path, delimiter=';', parse_dates=[0], index_col = 0)
     df[list(indicator_vars.keys())] = df[list(indicator_vars.keys())].astype('int')
-    df = df.tz_localize('utc')
+    df = df.tz_convert('utc')
     df = df.sort_index()
     
     if update_date:
@@ -86,7 +86,7 @@ def update_dataset(df=None, to_date=None):
         df_a.columns = ['actual', 'time']
         df_a['time'] = pd.to_datetime(df_a['time'], format=fmt)
         df_a.index = df_a['time']
-        df_a.index = df_a.index.tz_localize('utc')
+        df_a.index = df_a.index.tz_convert('utc')
         df_a = df_a.drop('time', 1)
         df_n = df_n.combine_first(df_a)
     else:
@@ -99,7 +99,7 @@ def update_dataset(df=None, to_date=None):
     df_f.columns = ['entsoe', 'time']
     df_f['time'] = pd.to_datetime(df_f['time'], format=fmt)
     df_f.index = df_f['time']
-    df_f.index = df_f.index.tz_localize('utc')
+    df_f.index = df_f.index.tz_convert('utc')
     df_f = df_f.drop('time', 1) 
     df_n = df_n.combine_first(df_f)
     
