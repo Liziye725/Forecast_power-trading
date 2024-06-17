@@ -95,7 +95,7 @@ def create_model(layers=None, sample_size=None, batch_size=1, timesteps=1, featu
         Sets up the LSTM layers: [{'type': 'lstm, 'cells': 50, 'dropout': 0, 'ret_seq': False, 'stateful': True }]
     input_shape : tuple
         Needs in following form: (sample_size, timesteps, features)
-    batch_input_shape : tuple
+    xxxxbatch_input_shape : tuple
         Needs in following form: (batch_size, timesteps, features)
     loss : str
     
@@ -113,8 +113,7 @@ def create_model(layers=None, sample_size=None, batch_size=1, timesteps=1, featu
     for idx, l in enumerate(layers):
         if idx == 0:
             model.add(LSTM(l["cells"],
-                           input_shape=(sample_size,timesteps,features),
-                           batch_input_shape=(batch_size,timesteps,features),
+                           input_shape=(timesteps,features),
                            return_sequences=l["ret_seq"],
                            stateful=l["stateful"],# TODO: Could actually set to True always
                           )
