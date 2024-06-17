@@ -3,23 +3,42 @@
 1. Version and usage update for packages:
 
 ```python
-# from statsmodels.tsa import stattools
-import statsmodels.api as stattools
+   # from statsmodels.tsa import stattools
+   import statsmodels.api as stattools
 ```
 
-2. Using tz_convert instead of tz_localize
+2. Using tz_convert instead of tz_localize.
 
 ```python
-# df = df.tz_localize
-df = df.tz_convert('utc')
+   # df = df.tz_localize
+   df = df.tz_convert('utc')
 ```
 
 3. Using datetime.datetime. instead of datetime.
    (`import datetime as dt`)
 
 ```python
-# dt.fromtimestamp()
-dt.datetime.fromtimestamp()
+   # dt.fromtimestamp()
+   dt.datetime.fromtimestamp()
+```
+
+4. Make sure the data structure we are using:
+
+- pd.concat for dataframe
+- .append for list
+
+Convert list to dataframe then concat:
+
+```python
+   result = pd.DataFrame([{'model_name': m['name'], 'config':m, 'train_loss': str(e)}])
+   results = pd.concat([results, result], ignore_index=True)
+```
+
+or
+
+```python
+   result = [{'model_name': m['name'], 'config': m, 'train_loss': str(e)}]
+   results = pd.concat([results, pd.DataFrame(result)], ignore_index=True)
 ```
 
 ## Notification before git add

@@ -1,0 +1,2 @@
+;model_name;config;train_loss
+0;01_1_1-0;{'name': '01_1_1-0', 'layers': [{'type': 'lstm', 'cell': 5, 'dropout': 0, 'statful': True, 'ret_seq': False}], 'batch_size': 8, 'timesteps': 1};'cells'
