@@ -1,4 +1,4 @@
-## Update changes for old version
+## Updates for old version
 
 1. Version and usage update for packages:
 
@@ -22,10 +22,10 @@
    dt.datetime.fromtimestamp()
 ```
 
-4. Make sure the data structure we are using:
+4. Make sure which the data structure we are using:
 
-- pd.concat for dataframe
-- .append for list
+- `pd.concat()` for dataframe
+- `.append()` for list
 
 Convert list to dataframe then concat:
 
@@ -39,6 +39,15 @@ or
 ```python
    result = [{'model_name': m['name'], 'config': m, 'train_loss': str(e)}]
    results = pd.concat([results, pd.DataFrame(result)], ignore_index=True)
+```
+
+The second one has clearer logic, making it easier to understand and maintain.
+
+5. Change feature scaling method from `MinMaxScaler` to `StandardScaler`
+
+```
+# from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 ```
 
 ## Notification before git add
@@ -63,3 +72,47 @@ or
   ```
   git config core.autocrlf true
   ```
+
+In your provided code, you're using `StandardScaler` to normalize the data. Let's compare the two common scalers: `MinMaxScaler` and `StandardScaler`, and discuss which is more appropriate based on the context of your task.
+
+### 1. **MinMaxScaler**
+
+- **Functionality**: Scales the data to a specific range, typically [0, 1]. It subtracts the minimum value of the feature and divides it by the range (max - min).
+- **Formula**:
+  $$
+  X*{\text{scaled}} = \frac{X - X*{\text{min}}}{X*{\text{max}} - X*{\text{min}}}
+  $$
+- **Use case**:
+  - When **features do not follow a normal distribution** and are bounded (e.g., between certain fixed min and max values like image pixel values).
+  - **Sensitive to outliers**: Since it uses the min and max values, it can be affected by outliers in the data. Outliers will compress the majority of the data towards the lower end of the range.
+
+### 2. **StandardScaler**
+
+- **Functionality**: Standardizes the data by removing the mean and scaling to unit variance (z-score normalization). It assumes the data follows a Gaussian distribution.
+- **Formula**:
+  $$
+   X_{\text{scaled}} = \frac{X - \mu}{\sigma}
+  $$
+  where $ \mu $ is the mean and $ \sigma $ is the standard deviation.
+- **Use case**:
+  - Works well for data that is **normally distributed**.
+  - Robust to **outliers**, as it uses mean and standard deviation for scaling rather than the min and max.
+
+### Choosing between the two:
+
+- **Data Distribution**:
+
+  - If your data is **normally distributed** (bell-shaped curve), `StandardScaler` is the better choice. It makes the data have a mean of 0 and a standard deviation of 1, which is particularly useful when training models that assume normally distributed inputs (e.g., certain machine learning models like SVM, LSTM).
+  - If the data is **not normally distributed** or is bounded (like [0, 1] or other fixed ranges), `MinMaxScaler` is more suitable, especially when you want the features to be within a certain range.
+
+- **Outliers**:
+  - If your data contains **significant outliers**, `MinMaxScaler` can skew the results since it's sensitive to the extreme values. In contrast, `StandardScaler` is less influenced by outliers because it scales based on the overall distribution.
+- **Deep Learning Context**:
+  - In **LSTM** or other neural network models, scaling the inputs is crucial, especially when dealing with data that varies widely in magnitude. In most cases, **StandardScaler** works well because the LSTM model benefits from normally distributed data. However, if the data has a bounded range (e.g., values between 0 and 1), `MinMaxScaler` can also be effective, especially if your activation functions are bounded (like sigmoid or tanh).
+
+### Conclusion:
+
+- Since your task involves LSTM and you might not have strictly bounded data, **`StandardScaler`** is a safe and commonly effective choice, as it makes the data zero-centered and normalized, which helps models converge faster.
+- If you have reason to believe your data is better represented within a fixed range (e.g., bounded inputs like percentages or pixel values), you may want to consider `MinMaxScaler`.
+
+In your case, given the nature of the energy and weather-related features, using `StandardScaler` (as you've done) is likely appropriate unless your features are strictly bounded within a certain range.
