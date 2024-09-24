@@ -112,7 +112,7 @@ In your provided code, you're using `StandardScaler` to normalize the data. Let'
 
 ### Conclusion:
 
-- Since your task involves LSTM and you might not have strictly bounded data, **`StandardScaler`** is a safe and commonly effective choice, as it makes the data zero-centered and normalized, which helps models converge faster.
+- Since the task involves LSTM and you might not have strictly bounded data, **`StandardScaler`** is a safe and commonly effective choice, as it makes the data zero-centered and normalized, which helps models converge faster.
 - If you have reason to believe your data is better represented within a fixed range (e.g., bounded inputs like percentages or pixel values), you may want to consider `MinMaxScaler`.
 
-In your case, given the nature of the energy and weather-related features, using `StandardScaler` (as you've done) is likely appropriate unless your features are strictly bounded within a certain range.
+In this case, given the nature of the energy and weather-related features, using `StandardScaler` (as you've done) is likely appropriate unless your features are strictly bounded within a certain range.
